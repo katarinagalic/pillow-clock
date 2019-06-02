@@ -1,11 +1,28 @@
 from django import forms
-from .models import User
+from .models import User_Alarm, Night
 
 
-class UserForm(forms.ModelForm):
-    username = forms.CharField()
-    alarm_time = forms.TimeField()
+class UserAlarmForm(forms.ModelForm):
+    user_id = forms.CharField()
+    alarm_time = forms.TimeField(widget=forms.TextInput(attrs={'placeholder': 'HH:MM:SS'}))
 
     class Meta:
-        model = User
-        fields = ['username', 'alarm_time']
+        model = User_Alarm
+        fields = ['user_id', 'alarm_time']
+
+class UserForm(forms.ModelForm):
+    user_id = forms.CharField()
+
+    class Meta:
+        model = User_Alarm
+        fields = ['user_id']
+
+
+class NightForm(forms.ModelForm):
+    sleeper = forms.ModelChoiceField(queryset=User_Alarm.objects.all())
+    start_sleep = forms.DateTimeField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD HH:MM:SS'}))
+    end_sleep = forms.DateTimeField(widget=forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD HH:MM:SS'}))
+
+    class Meta:
+        model = Night
+        fields = ['sleeper', 'start_sleep', 'end_sleep']

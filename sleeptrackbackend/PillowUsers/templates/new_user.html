@@ -1,14 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+	<title>Pillow Alarm Clock</title>
+	<meta charset="utf-8">
+    <style>
+        /*header*/
+body, h1,p {
+	margin: 0;
+	padding:0;
+}
+body{
+	background: #eaeaea repeat-x 0 -30px;
+	font-family: "Trebuchet MS",Arial,Verdana,sans-serif;
+	font-size:14px;
+	background-attachment: fixed;
+}
+#wrapper{
+	margin: 0 auto;
+	width: 960px;
+	background: #fff;
+}
+#header {
+	background: url("https://66.media.tumblr.com/06a63cdd1ef1c66e34babec7289e1989/tumblr_inline_pqopvkqnP01t16r6x_540.jpg") no-repeat;
+    height: 200px;
+    background-size: cover;
+    background-position-y: -58px;
+}
+#header h1 {
+	padding: 35px 0 0 20px;
+	color:#4300FF;
+	text-shadow: 3px 3px 1px #fff;
+}
+#menu {
+	background: #3C3C3C;
+	height: 40px
+}
+.nav {
+	font-size: 14px;
+	color: #333333;
+	padding: 10px 20px 0 0;
+	float: right;
+}
+.nav ul {
+	padding:0px;
+	margin: 0px;
+	list-style:none;
+	float:left;
+}
+.nav ul li {
+	display: block;
+	float: left;
+	padding:0 13px;
+}
+.nav ul li a {
+	display: block;
+	float: left;
+	color: #eeeeee;
+	text-decoration: none;
+	letter-spacing: 1px;
+}
+.nav ul li a:hover {
+	color: #6DC1FF;
+	text-decoration: underline;
+}
+.banner{
+	margin-bottom: 20px;
+}
+.add{
+	font-size:28px;
+	text-align:center;
+	background:rgba(0,0,0,0.5);
+	padding:20px;
+	color:#fff;
+	font-weight: bold;
+	letter-spacing:1.5px;
+	text-shadow: 3px 3px 1px #000;
+}
+
+#form {
+    padding: 50px;
+
+}
+.blue-line {
+	width:920px;
+	height:1px;
+	margin: 0 auto;
+	background: #6DC1FF
+}
+.message {
+	padding: 20px;
+	font-size: 16px;
+	line-height: 20px;
+	text-align: center;
+	font-weight: bold;
+}
+.container-product {
+	float:left;
+	padding: 20px;
+	width: 920px;
+}
+.product{
+	float: left;
+	width: 290px;
+	margin-right:25px;
+	line-height: 20px;
+}
+.product-last{
+	margin-right:0;
+	float: left;
+	width: 290px;
+}
+.clear{
+	clear: both;
+}
+#footer {
+	background: #3C3C3C;
+	height: 80px;
+	width: 100%
+}
+.footer-text {
+	font-size: 18px;
+	text-align: center;
+	color: #fff;
+	margin: 0;
+	padding-top: 20px;
+}
+.submitmsg ul {
+	list-style:none
+}
+li {
+	list-style:none
+}
+    </style>
+
 </head>
 <body>
-    <h2>Alarm User</h2>
-    <form method="POST">{%  csrf_token %}
+    <div id="wrapper">
+
+		<div id="header"> </div>
+
+		<div id="menu">
+			<div class="nav">
+				<ul>
+					<li><a href="/about">About</a></li>
+					<li><a href="/new_user/">Add User</a></li>
+                    <li><a href="/users/">Users</a></li>
+                    <li><a href="/nights/">Data Entry</a></li>
+				</ul>
+			</div>
+		</div>
+
+        <div class="banner">
+			<div class="add">Add a New User</div>
+		</div>
+
+		<div style="visibility: hidden;">
+			<p> useridnumber {{user.id}} </p>
+		</div>
+        <div align="center" id="form">
+            <form method="POST">{%  csrf_token %} <!--form-->
         {{ form.as_p }}
+				<br>
         <input type ="submit" value ="Submit" />
-    </form>
+            </form>
+        </div>
+
+		<div class="clear"></div>
+
+		{% if user %} <!--image code-->
+		<div align="center">
+				<img src="/sleeptrack/{{user.user_id}}">
+		</div>
+		{% endif %}
+
+		<div class="submitmsg" align="center"><font color="red"> <!--exception message-->
+				{% if messages %}
+			<ul class="messages">
+    		{% for message in messages %}
+    		<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    		{% endfor %}
+			</ul>
+			{% endif %}
+		</div></font>
+
+		<div class="blue-line"></div>
+
+		<div class="message">
+			<p>
+				Your current time has been automatically set to your time zone.
+				Please set your alarm time and click submit.
+			</p>
+		</div>
+
+		<div class="blue-line"></div>
+
+		<div class="clear"><br></div>
+
+		<div id="footer">
+			<h2 class="footer-text">PillowTime © 2019</h2>
+        </div>
+
+	</div><!--wrapper-->
+
 </body>
 </html>
