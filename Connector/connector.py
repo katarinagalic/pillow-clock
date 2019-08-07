@@ -1,5 +1,4 @@
 import datetime
-import threading
 import time
 from setTime import SetTimeCommand
 from command import Command 
@@ -42,21 +41,26 @@ if __name__ == "__main__":
 	try:
 		current_time = getTime()
 		setTimeCommand = SetTimeCommand(current_time)
-		#serial.sendCommand(setTimeCommand)
+		myTime = "setTime(" + str(setTimeCommand).lstrip() + ")"
+		serial.sendCommand(myTime)
 		user = input('Username:')
 		test = requestServer(user)
 		testU = test.getUsername(user)
 		testA = test.getAlarmTime(user)
+		alarmTime = "setAlarm(" + testA + ")"
 		print (testU)
 		print (testA)
 		#serial.sendCommand(testU)
-		#serial.sendCommand(testA)
+		serial.sendCommand(alarmTime)
+		serial.close() 
+		serial.connect()
 		serial.sendCommand('getData')
 
 
 
 		print("waiting for response")
 		response = serial.readLine()
+		print (response)
 		finResponse = response.decode()
 		text = ''.join(s for s in finResponse if ord(s)>31 and ord(s)<126)
 		text = text.replace('I got: getData', '')

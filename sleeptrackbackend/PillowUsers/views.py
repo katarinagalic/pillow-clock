@@ -11,10 +11,13 @@ from django.views.decorators.http import require_http_methods
 
 from .forms import UserAlarmForm, NightForm, UserForm
 from .models import User_Alarm
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use('Agg')
+matplotlib.use('TkAgg')
 from matplotlib import pylab
-import matplotlib.pyplot as pp
-import matplotlib as plt
 from pylab import *
+
 
 def create_user(request):
     try:
@@ -72,20 +75,18 @@ def sleeptrack(request, current):
                 x.append(night.day_id)
                 y.append(night.conversion())
 
-            pp.bar(x,y, width=0.5)
+            plt.bar(x,y, width=0.5, color='blue')
             plt.xlabel('Day')
             plt.ylabel('Time')
             plt.title('Sleepdata')
-            pp.xticks(range(len(x)+1))
-
-
+            plt.xticks(range(len(x)+1))
 
             buffer = io.BytesIO()
             canvas = pylab.get_current_fig_manager().canvas
             canvas.draw()
             pilImage = PIL.Image.frombytes("RGB", canvas.get_width_height(), canvas.tostring_rgb())
             pilImage.save(buffer, "PNG")
-            pylab.close()
+            plt.close()
             return HttpResponse(buffer.getvalue(), content_type='image/png')
         else:
             return HttpResponse(list(result))
